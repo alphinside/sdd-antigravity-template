@@ -28,11 +28,11 @@ Identify inconsistencies, duplications, ambiguities, and underspecified items ac
 
 ### 1. Initialize Analysis Context
 
-Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` once from repo root and parse JSON for FEATURE_DIR and AVAILABLE_DOCS. Derive paths:
+Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` once from repo root and parse JSON for FEATURE_DIR and AVAILABLE_DOCS. Derive absolute paths:
 
 - SPEC = FEATURE_DIR/spec.md
-- IMPL_PLAN = `implementation_plan.md` from your brain directory
-- TASK = `task.md` from your brain directory
+- PLAN = FEATURE_DIR/plan.md
+- TASKS = FEATURE_DIR/tasks.md
 
 Abort with an error message if any required file is missing (instruct the user to run missing prerequisite command).
 For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\\''m Groot' (or double-quote if possible: "I'm Groot").
@@ -49,14 +49,14 @@ Load only the minimal necessary context from each artifact:
 - User Stories
 - Edge Cases (if present)
 
-**From implementation_plan.md (brain directory):**
+**From plan.md:**
 
 - Architecture/stack choices
 - Data Model references
 - Phases
 - Technical constraints
 
-**From task.md (brain directory):**
+**From tasks.md:**
 
 - Task IDs
 - Descriptions
@@ -165,10 +165,6 @@ At end of report, output a concise Next Actions block:
 ### 8. Offer Remediation
 
 Ask the user: "Would you like me to suggest concrete remediation edits for the top N issues?" (Do NOT apply them automatically.)
-
-If user approves remediation, sync changes to:
-- Brain directory: Update `implementation_plan.md` and/or `task.md`
-- Feature directory: Copy updated files to FEATURE_DIR as `plan.md` and `tasks.md`
 
 ## Operating Principles
 
