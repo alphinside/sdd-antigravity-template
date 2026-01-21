@@ -79,10 +79,10 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Map focus selections to category scaffolding
    - Infer any missing context from spec/plan/tasks (do NOT hallucinate)
 
-4. **Load feature context**: Read from your brain directory and FEATURE_DIR:
-   - `implementation_plan.md` from your brain directory: Technical details, dependencies
-   - `task.md` from your brain directory: Implementation tasks
-   - spec.md from FEATURE_DIR: Feature requirements and scope
+4. **Load feature context**: Read from FEATURE_DIR:
+   - spec.md: Feature requirements and scope
+   - plan.md (if exists): Technical details, dependencies
+   - tasks.md (if exists): Implementation tasks
 
    **Context Loading Strategy**:
    - Load only necessary portions relevant to active focus areas (avoid full-file dumping)
@@ -98,9 +98,6 @@ You **MUST** consider the user input before proceeding (if not empty).
      - If file exists, append to existing file
    - Number items sequentially starting from CHK001
    - Each `/speckit.checklist` run creates a NEW file (never overwrites existing checklists)
-   - **Remediation sync**: If any remediation changes are made to `implementation_plan.md` or `task.md`, sync changes to:
-     - Brain directory: Update `implementation_plan.md` and/or `task.md`
-     - Feature directory: Copy updated files to FEATURE_DIR as `plan.md` and `tasks.md`
 
    **CORE PRINCIPLE - Test the Requirements, Not the Implementation**:
    Every checklist item MUST evaluate the REQUIREMENTS THEMSELVES for:

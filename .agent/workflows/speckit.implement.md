@@ -3,7 +3,7 @@ description: Execute the implementation plan by processing and executing all tas
 ---
 
 ---
-description: Execute the implementation plan by processing and executing all tasks defined in asks.md
+description: Execute the implementation plan by processing and executing all tasks defined in tasks.md
 ---
 
 ## User Input
@@ -16,7 +16,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-1. Run `{SCRIPT}` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
+1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\\''m Groot' (or double-quote if possible: "I'm Groot").
 
 2. **Check checklists status** (if FEATURE_DIR/checklists/ exists):
    - Scan all checklist files in the checklists/ directory
@@ -50,12 +50,12 @@ You **MUST** consider the user input before proceeding (if not empty).
      - Automatically proceed to step 3
 
 3. Load and analyze the implementation context:
-   - **REQUIRED**: Read `task.md` from your brain directory for the complete task list and execution plan
-   - **REQUIRED**: Read `implementation_plan.md` from your brain directory for tech stack, architecture, and file structure
-   - **IF EXISTS**: Read data-model.md from FEATURE_DIR for entities and relationships
-   - **IF EXISTS**: Read contracts/ from FEATURE_DIR for API specifications and test requirements
-   - **IF EXISTS**: Read research.md from FEATURE_DIR for technical decisions and constraints
-   - **IF EXISTS**: Read quickstart.md from FEATURE_DIR for integration scenarios
+   - **REQUIRED**: Read tasks.md for the complete task list and execution plan
+   - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
+   - **IF EXISTS**: Read data-model.md for entities and relationships
+   - **IF EXISTS**: Read contracts/ for API specifications and test requirements
+   - **IF EXISTS**: Read research.md for technical decisions and constraints
+   - **IF EXISTS**: Read quickstart.md for integration scenarios
 
 4. **Project Setup Verification**:
    - **REQUIRED**: Create/verify ignore files based on actual project setup:
@@ -101,39 +101,46 @@ You **MUST** consider the user input before proceeding (if not empty).
    - **Terraform**: `.terraform/`, `*.tfstate*`, `*.tfvars`, `.terraform.lock.hcl`
    - **Kubernetes/k8s**: `*.secret.yaml`, `secrets/`, `.kube/`, `kubeconfig*`, `*.key`, `*.crt`
 
-5. Parse `task.md` structure from your brain directory and extract:
+5. Parse tasks.md structure, extract the following information and create `task.md` in your brain directory to show as Artifact View to breakdown the work into checklist:
    - **Task phases**: Setup, Tests, Core, Integration, Polish
    - **Task dependencies**: Sequential vs parallel execution rules
    - **Task details**: ID, description, file paths, parallel markers [P]
    - **Execution flow**: Order and dependency requirements
 
-6. Execute implementation following the task plan:
+6. Create `implementation_plan.md` in your brain directory (separate file to the plan.md in the /specs/* dir, this one is low level implementation plan) as Artifact View based on task plan. This artifact MUST contain technical details on what revisions are necessary and is meant to be reviewed by the user.
+
+7. Ask the user to review the `task.md` and `implementation_plan.md` 
+Artifacts in your brain directory before starting execution. DO NOT skip this 
+step!
+
+8. Execute implementation following the task plan:
    - **Phase-by-phase execution**: Complete each phase before moving to the next
    - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together  
    - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks
    - **File-based coordination**: Tasks affecting the same files must run sequentially
    - **Validation checkpoints**: Verify each phase completion before proceeding
 
-7. Implementation execution rules:
+9. Implementation execution rules:
    - **Setup first**: Initialize project structure, dependencies, configuration
    - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
    - **Core development**: Implement models, services, CLI commands, endpoints
    - **Integration work**: Database connections, middleware, logging, external services
    - **Polish and validation**: Unit tests, performance optimization, documentation
 
-8. Progress tracking and error handling:
+10. Progress tracking and error handling:
    - Report progress after each completed task
    - Halt execution if any non-parallel task fails
    - For parallel tasks [P], continue with successful tasks, report failed ones
    - Provide clear error messages with context for debugging
    - Suggest next steps if implementation cannot proceed
-   - **IMPORTANT** For completed tasks, mark the task off as [X] in `task.md` in your brain directory, then sync to FEATURE_DIR as `tasks.md`
+   - **IMPORTANT** For completed tasks, make sure to mark the task off as [X] in the `task.md` file.
 
-9. Completion validation:
+11. Completion validation:
    - Verify all required tasks are completed
+   - Copy the progress reflected in `task.md` file to tasks.md under the specification directory
    - Check that implemented features match the original specification
    - Validate that tests pass and coverage meets requirements
    - Confirm the implementation follows the technical plan
    - Report final status with summary of completed work
 
-Note: This command assumes a complete task breakdown exists in `task.md` in your brain directory. If tasks are incomplete or missing, suggest running `/speckit.tasks` first to regenerate the task list.
+Note: This command assumes a complete task breakdown exists in stasks.md. If tasks are incomplete or missing, suggest running `/speckit.tasks` first to regenerate the task list.
