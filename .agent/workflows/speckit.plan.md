@@ -80,14 +80,22 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Use standard REST/GraphQL patterns
    - Output OpenAPI/GraphQL schema to `/contracts/`
 
-3. **Agent context update**:
-   - Run `scripts/bash/update-agent-context.sh antigravity`
-   - These scripts detect which AI agent is in use
-   - Update the appropriate agent-specific context file
-   - Add only new technology from current plan
-   - Preserve manual additions between markers
+3. **Project context update** → `.agent/rules/project-context.md`:
+   
+   Update or create `.agent/rules/project-context.md` using the template at `.specify/templates/project-context-template.md`.
+   
+   **Update rules**:
+   - If file doesn't exist, create from template with information from this feature
+   - If file exists, update only relevant sections:
+     - Add new technologies from Technical Context (avoid duplicates)
+     - Add new entities from data-model.md to Data Model Overview
+     - Add new integrations from contracts/ to External Integrations
+     - Prepend feature to Recent Features (keep last 5)
+     - Update Last Updated date and Updated By fields
+   - Preserve content between `<!-- MANUAL ADDITIONS START -->` and `<!-- MANUAL ADDITIONS END -->`
+   - For Project Identity, only fill if empty (don't overwrite existing values)
 
-**Output**: data-model.md, /contracts/*, quickstart.md, agent-specific file
+**Output**: data-model.md, /contracts/*, quickstart.md, .agent/rules/project-context.md
 
 ## Key rules
 
