@@ -30,12 +30,12 @@
 #
 # 5. Multi-Agent Support
 #    - Handles agent-specific file paths and naming conventions
-#    - Supports: Claude, Gemini, Copilot, Cursor, Qwen, opencode, Codex, Windsurf, Kilo Code, Auggie CLI, Roo Code, CodeBuddy CLI, Qoder CLI, Amp, SHAI, or Amazon Q Developer CLI
+#    - Supports: Antigravity, Claude, Gemini, Copilot, Cursor, Qwen, opencode, Codex, Windsurf, Kilo Code, Auggie CLI, Roo Code, CodeBuddy CLI, Qoder CLI, Amp, SHAI, or Amazon Q Developer CLI
 #    - Can update single agents or all existing agent files
 #    - Creates default Claude file if no agent files exist
 #
 # Usage: ./update-agent-context.sh [agent_type]
-# Agent types: claude|gemini|copilot|cursor-agent|qwen|opencode|codex|windsurf|kilocode|auggie|shai|q|bob|qoder
+# Agent types: antigravity|claude|gemini|copilot|cursor-agent|qwen|opencode|codex|windsurf|kilocode|auggie|shai|q|bob|qoder
 # Leave empty to update all existing agent files
 
 set -e
@@ -59,6 +59,7 @@ NEW_PLAN="$IMPL_PLAN"  # Alias for compatibility with existing code
 AGENT_TYPE="${1:-}"
 
 # Agent-specific file paths  
+ANTIGRAVITY_FILE="$REPO_ROOT/.agent/rules/specify-rules.md"
 CLAUDE_FILE="$REPO_ROOT/CLAUDE.md"
 GEMINI_FILE="$REPO_ROOT/GEMINI.md"
 COPILOT_FILE="$REPO_ROOT/.github/agents/copilot-instructions.md"
@@ -582,6 +583,9 @@ update_specific_agent() {
     local agent_type="$1"
     
     case "$agent_type" in
+        antigravity)
+            update_agent_file "$ANTIGRAVITY_FILE" "Antigravity"
+            ;;
         claude)
             update_agent_file "$CLAUDE_FILE" "Claude Code"
             ;;
@@ -635,7 +639,7 @@ update_specific_agent() {
             ;;
         *)
             log_error "Unknown agent type '$agent_type'"
-            log_error "Expected: claude|gemini|copilot|cursor-agent|qwen|opencode|codex|windsurf|kilocode|auggie|roo|amp|shai|q|bob|qoder"
+            log_error "Expected: antigravity|claude|gemini|copilot|cursor-agent|qwen|opencode|codex|windsurf|kilocode|auggie|roo|amp|shai|q|bob|qoder"
             exit 1
             ;;
     esac
@@ -645,6 +649,11 @@ update_all_existing_agents() {
     local found_agent=false
     
     # Check each possible agent file and update if it exists
+    if [[ -f "$ANTIGRAVITY_FILE" ]]; then
+        update_agent_file "$ANTIGRAVITY_FILE" "Antigravity"
+        found_agent=true
+    fi
+    
     if [[ -f "$CLAUDE_FILE" ]]; then
         update_agent_file "$CLAUDE_FILE" "Claude Code"
         found_agent=true
@@ -744,7 +753,7 @@ print_summary() {
     
     echo
 
-    log_info "Usage: $0 [claude|gemini|copilot|cursor-agent|qwen|opencode|codex|windsurf|kilocode|auggie|codebuddy|shai|q|bob|qoder]"
+    log_info "Usage: $0 [antigravity|claude|gemini|copilot|cursor-agent|qwen|opencode|codex|windsurf|kilocode|auggie|codebuddy|shai|q|bob|qoder]"
 }
 
 #==============================================================================
