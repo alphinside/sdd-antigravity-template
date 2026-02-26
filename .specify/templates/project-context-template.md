@@ -30,12 +30,44 @@
 [Actual directory structure discovered from repository]
 ```
 
+## API Surface
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| [GET/POST/...] | [/path] | [One-line description] |
+
+## Runtime Dependency Graph
+
+```
+[Process A :port] → [Process B :port] → [External Service]
+```
+
+- [Process]: [What it does, what port, how to start it]
+
+## Local Dev Runbook
+
+1. [First command — e.g., install dependencies]
+2. [Second command — e.g., start background service]
+3. [Third command — e.g., start main server]
+4. [Open URL — e.g., http://localhost:8080]
+
 ## Data Model Overview
 
 ### Entities (Cross-Feature)
 - **[Entity Name]** (defined in feature-XXX):
   - Purpose: [What it represents]
+  - Key fields: [field (type), field (type), ...]
   - Relationships: [Links to other entities]
+  - Special features: [vector columns, indexes, etc.]
+
+### Tool Definitions
+- **[Tool Name]**: [target table] — [operation type: SELECT/INSERT/UPDATE/DELETE]
+
+## Domain Glossary
+
+| Term | Definition |
+|------|-----------|
+| [Term] | [One-line definition] |
 
 ## External Integrations
 
@@ -66,8 +98,13 @@
 
 ## Configuration
 
-- **Environment Variables**: [Document required vars from .env.example]
 - **Config Files**: [List key configuration file locations]
+
+### Environment Variable Dependency Chain
+
+| Variable | Consumed By | What Breaks If Missing |
+|----------|-------------|----------------------|
+| [VAR_NAME] | [component/file] | [consequence] |
 
 ## Known Constraints
 
